@@ -1,0 +1,63 @@
+create table Categories
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ CategoryName varchar(80) NOT NULL,
+ DailyRate float,
+ WeeklyRate float,
+ MonthlyRate float,
+ WeekendRate float
+)
+
+create table Cars
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ PlateNumber varchar(255) NOT NULL UNIQUE,
+ Manufacturer varchar(255) NOT NULL,
+ Model varchar(255) NOT NULL,
+ CarYear Date NOT NULL,
+ CategoryId int NOT NULL,
+ foreign key (CategoryId) references Categories(Id),
+ Doors int NOT NULL,
+ Picture binary(800),
+ Condition text,
+ Available bit NOT NULL
+)
+create table Employees
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ FirstName varchar(70) NOT NULL,
+ LastName varchar(250) NOT NULL,
+ Title varchar(80),
+ Notes text
+)
+create table Customers
+(
+ Id int IDENTITY NOT NULL PRIMARY KEY,
+ DrivingLicenceNumber varchar(50) NOT NULL UNIQUE,
+ FullName varchar(250) NOT NULL,
+ Adress varchar(255) NOT NULL,
+ City varchar (100) NOT NULL,
+ ZIPCode varchar(10) NOT NULL,
+ Notes text
+)
+create table RentalOrders
+(
+ Id int IDENTITY NOT NULL PRIMARY KEY,
+ EmployeeId int NOT NULL,
+ foreign key(EmployeeId) references Employees(Id),
+ CustomerId int NOT NULL,
+ foreign key(CustomerId) references Customers(Id),
+ CarId int NOT NULL,
+ foreign key (CarId) references Cars(Id),
+ TankLevel int NOT NULL,
+ KilometrageStart int NOT NULL,
+ KilometrageEnd int NOT NULL,
+ TotalKilometrage int NOT NULL,
+ StartDate date Default GetDate(),
+ EndDate date,
+ TotalDays int NOT NULL,
+ RateApplied int ,
+ TaxRate float NOT NULL,
+ OrderStatus varchar(255),
+ Notes text
+)

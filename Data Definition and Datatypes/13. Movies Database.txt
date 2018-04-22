@@ -1,0 +1,31 @@
+create table Directors
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ DirectorName varchar(255),
+ Notes text
+)
+create table Genres
+(
+ Id int NOT NULL PRIMARY KEY IDENTITY,
+ GenreName varchar(50),
+ Notes text
+)
+create table Categories
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ CategoryName varchar(255),
+ Notes text
+)
+create table Movies
+(
+ Id int NOT NULL IDENTITY PRIMARY KEY,
+ Title varchar(255) NOT NULL UNIQUE,
+ CopyrightYear date NOT NULL,
+ Lenght int NOT NULL,
+ GenreId int NOT NULL,
+  Foreign key(GenreId) references Genres(id),
+  CategoryId int NOT NULL,
+  foreign key (CategoryId) references Categories(id),
+  Raiting int,
+  Notes text
+)

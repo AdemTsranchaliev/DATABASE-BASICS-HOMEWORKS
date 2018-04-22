@@ -1,0 +1,11 @@
+create table People
+(
+ Id int NOT NULL IDENTITY UNIQUE,
+ Name varchar(200) NOT NULL,
+ Picture varbinary(2),
+ Height numeric(10,2), 
+ Weight numeric(10,2), 
+ Gender varchar(2) NOT NULL CHECK (Gender ='m' or Gender='f'),
+ Birthdate  date NOT NULL,
+ Biography text
+)

@@ -1,0 +1,8 @@
+create table users(
+ Id int NOT NULL IDENTITY ,
+ Username nvarchar(30) UNIQUE NOT NULL,
+ Password nvarchar(26) NOT NULL,
+ ProfilePicture varbinary(9),
+ LastLoginTime datetime,
+ IsDeleted bit
+)
