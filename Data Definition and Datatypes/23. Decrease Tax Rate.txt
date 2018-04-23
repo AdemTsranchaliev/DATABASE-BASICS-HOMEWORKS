@@ -1,0 +1,4 @@
+update Payments
+set TaxRate-=TaxRate*0.3
+
+select TaxRate from Payments
