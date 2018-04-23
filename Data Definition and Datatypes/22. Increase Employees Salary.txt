@@ -1,0 +1,5 @@
+update Employees
+set Salary+=Salary*0.1
+
+select Salary from Employees
+
