@@ -1,0 +1,87 @@
+CREATE TABLE Clients
+(
+ ClientId INT IDENTITY PRIMARY KEY NOT NULL,
+ FirstName NVARCHAR(50) NOT NULL,
+ LastName NVARCHAR(50) NOT NULL,
+ Phone CHAR(12) NOT NULL
+)
+
+CREATE TABLE Mechanics
+(
+ MechanicId INT IDENTITY PRIMARY KEY NOT NULL,
+ FirstName NVARCHAR(50) NOT NULL,
+ LastName NVARCHAR(50) NOT NULL,
+ Address NVARCHAR(255) NOT NULL
+)
+
+CREATE TABLE Models
+(
+ ModelId INT IDENTITY PRIMARY KEY NOT NULL,
+ Name NVARCHAR(50) NOT NULL UNIQUE,
+
+)
+
+
+
+CREATE TABLE Jobs
+(
+ JobId INT IDENTITY PRIMARY KEY NOT NULL,
+ ModelId INT NOT NULL,
+ FOREIGN KEY (ModelId) REFERENCES Models(ModelId),
+ Status NVARCHAR(11) NOT NULL CHECK(Status IN ('Pending','In Progress','Finished')) DEFAULT 'Pending',
+ ClientId INT NOT NULL,
+ FOREIGN KEY (ClientId) REFERENCES Clients(ClientId),
+ MechanicId INT,
+ FOREIGN KEY (MechanicId) REFERENCES Mechanics(MechanicId),
+ IssueDate DATE NOT NULL,
+FinishDate DATE
+)
+CREATE TABLE Vendors
+(
+ VendorId INT IDENTITY PRIMARY KEY NOT NULL,
+ Name NVARCHAR(50) NOT NULL UNIQUE,
+
+)
+
+
+CREATE TABLE Orders
+(
+ OrderId INT IDENTITY PRIMARY KEY NOT NULL,
+ JobId INT NOT NULL ,
+ FOREIGN KEY (JobId) REFERENCES Jobs(JobId),
+ IssueDate DATE,
+ Delivered BIT DEFAULT 0
+)
+
+CREATE TABLE Parts
+(
+ PartId INT NOT NULL PRIMARY KEY IDENTITY ,
+ SerialNumber NVARCHAR(50) NOT NULL Unique,
+ Description NVARCHAR(255),
+ Price DECIMAL(16,4) CHECK(Price>0) NOT NULL,
+ VendorId INT NOT NULL,
+ FOREIGN KEY (VendorId) REFERENCES Vendors(VendorId),
+ StockQty INT CHECK(StockQty>=0) DEFAULT 0
+)
+
+CREATE TABLE OrderParts
+(
+ OrderId INT NOT NULL,
+ FOREIGN KEY (OrderId) REFERENCES Orders(OrderId),
+ PartId INT NOT NULL,
+ FOREIGN KEY (PartId) REFERENCES Parts(PartId),
+ Quantity INT NOT NULL CHECK(Quantity >= 0) DEFAULT 1
+ CONSTRAINT pk_OrderParts PRIMARY KEY(OrderId,PartId),
+
+)
+
+CREATE TABLE PartsNeeded
+(
+ JobId INT NOT NULL,
+ FOREIGN KEY (JobId) REFERENCES Jobs(JobId),
+ PartId INT NOT NULL,
+ FOREIGN KEY (PartId) REFERENCES Parts(PartId),
+ Quantity INT NOT NULL CHECK(Quantity > 0) DEFAULT 1
+ CONSTRAINT pk_PartsNeeded PRIMARY KEY(JobId,PartId),
+
+)
